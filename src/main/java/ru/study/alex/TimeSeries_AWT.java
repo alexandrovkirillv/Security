@@ -33,15 +33,6 @@ public class TimeSeries_AWT extends ApplicationFrame {
             series.add((Minute)e.getKey(), (Float)e.getValue());
         }
 
-//        Second current = new Second(11,11, 11, 11, 11, 2011);
-//        double value = 100.0;
-//
-//        series.add(current, 100.1);
-//        series.add(current.next(), 100.2);
-//        series.add(current.next().next(), 100.3);
-//        series.add(current.next().next().next(), 100.4);
-//        series.add(current.next().next().next().next(), 100.5);
-
 
         return new TimeSeriesCollection(series);
     }

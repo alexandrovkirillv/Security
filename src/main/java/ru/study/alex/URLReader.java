@@ -1,7 +1,6 @@
 package ru.study.alex;
 
 import org.jfree.data.time.Minute;
-import org.jfree.data.time.Second;
 import org.jfree.ui.RefineryUtilities;
 
 import java.io.BufferedReader;

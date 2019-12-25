@@ -13,6 +13,7 @@ public class View {
     private JPanel prePanel;
     private GridBagConstraints preCenter = new GridBagConstraints();
     private ArrayList<CheckBoxButton> checkList= new ArrayList<>();
+    private static URLReader urlReader = null;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -46,7 +47,7 @@ public class View {
         preCenter.gridwidth = GridBagConstraints.REMAINDER;
 
         preFrame.add(prePanel);
-        preFrame.setSize(600, 600);
+        preFrame.setSize(1000, 800);
 
         createCheckBoxButtons();
         prePanel.add(boxesPanel, preCenter);
@@ -55,8 +56,10 @@ public class View {
         boxesPanel2.setVisible(true);
         preFrame.setVisible(true);
 
-        demo = new TimeSeries_AWT(title, new ArrayList<>());
+        urlReader= new URLReader();
+        demo = new TimeSeries_AWT(title, new ArrayList<>(),urlReader);
         demo.setVisible(true);
+
         prePanel.add(demo, preCenter);
 
     }
@@ -121,7 +124,7 @@ public class View {
         prePanel.setVisible(false);
         prePanel.remove(demo);
         demo = null;
-        demo = new TimeSeries_AWT(title, paramsList);
+        demo = new TimeSeries_AWT(title, paramsList, urlReader);
         prePanel.add(demo);
         prePanel.setVisible(true);
     }

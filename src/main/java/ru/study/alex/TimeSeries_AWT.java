@@ -14,11 +14,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class TimeSeries_AWT extends JPanel {
-    private final URLReader urlReader = new URLReader();
 
-    public TimeSeries_AWT(final String title, ArrayList<String> parameters) throws Exception {
+    public TimeSeries_AWT(final String title, ArrayList<String> parameters, URLReader urlReader) throws Exception {
         // super(title);
-        XYDataset dataset = createDataset(parameters);
+        XYDataset dataset = createDataset(parameters, urlReader);
         String temp = "Climate monitoring system";
         JFreeChart chart = createChart(dataset, temp);
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -27,7 +26,7 @@ public class TimeSeries_AWT extends JPanel {
         add(chartPanel);
     }
 
-    private XYDataset createDataset(ArrayList<String> parameters) {
+    private XYDataset createDataset(ArrayList<String> parameters, URLReader urlReader) {
         ArrayList<TimeSeries> listOfSeries = new ArrayList<>();
 
         for (String parameter : parameters) {

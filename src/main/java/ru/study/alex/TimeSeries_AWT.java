@@ -7,34 +7,43 @@ import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.ApplicationFrame;
 
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class TimeSeries_AWT extends ApplicationFrame {
+public class TimeSeries_AWT extends JPanel {
+    private final URLReader urlReader = new URLReader();
 
-    public TimeSeries_AWT(final String title, String parameter) {
-        super(title);
-        final XYDataset dataset = createDataset();
-        final JFreeChart chart = createChart(dataset, parameter);
-        final ChartPanel chartPanel = new ChartPanel(chart);
+    public TimeSeries_AWT(final String title, ArrayList<String> parameters) throws Exception {
+        // super(title);
+        XYDataset dataset = createDataset(parameters);
+        String temp = "Climate monitoring system";
+        JFreeChart chart = createChart(dataset, temp);
+        ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(560, 370));
         chartPanel.setMouseZoomable(true, false);
-        setContentPane(chartPanel);
+        add(chartPanel);
     }
 
-    private XYDataset createDataset() {
-        final TimeSeries series = new TimeSeries("Random Data");
+    private XYDataset createDataset(ArrayList<String> parameters) {
+        ArrayList<TimeSeries> listOfSeries = new ArrayList<>();
 
-        TreeMap<Minute, Float> treeMap = URLReader.getResult();
-
-        for (Map.Entry e : treeMap.entrySet()) {
-            series.add((Minute)e.getKey(), (Float)e.getValue());
+        for (String parameter : parameters) {
+            TreeMap<Minute, Float> treeMap = urlReader.getResult(parameter);
+            TimeSeries series = new TimeSeries(parameter);
+            for (Map.Entry e : treeMap.entrySet()) {
+                series.add((Minute) e.getKey(), (Float) e.getValue());
+            }
+            listOfSeries.add(series);
         }
+        TimeSeriesCollection timeSeriesCollection = new TimeSeriesCollection();
 
-
-        return new TimeSeriesCollection(series);
+        for (TimeSeries series : listOfSeries) {
+            timeSeriesCollection.addSeries(series);
+        }
+        return timeSeriesCollection;
     }
 
     private JFreeChart createChart(final XYDataset dataset, String parameter) {

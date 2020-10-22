@@ -15,8 +15,7 @@ import java.util.TreeMap;
 
 public class TimeSeries_AWT extends JPanel {
 
-    public TimeSeries_AWT(final String title, ArrayList<String> parameters, URLReader urlReader) throws Exception {
-        // super(title);
+    public TimeSeries_AWT(ArrayList<String> parameters, URLReader urlReader) {
         XYDataset dataset = createDataset(parameters, urlReader);
         String temp = "Climate monitoring system";
         JFreeChart chart = createChart(dataset, temp);
@@ -32,8 +31,8 @@ public class TimeSeries_AWT extends JPanel {
         for (String parameter : parameters) {
             TreeMap<Minute, Float> treeMap = urlReader.getResult(parameter);
             TimeSeries series = new TimeSeries(parameter);
-            for (Map.Entry e : treeMap.entrySet()) {
-                series.add((Minute) e.getKey(), (Float) e.getValue());
+            for (Map.Entry<Minute, Float> e : treeMap.entrySet()) {
+                series.add(e.getKey(), e.getValue());
             }
             listOfSeries.add(series);
         }

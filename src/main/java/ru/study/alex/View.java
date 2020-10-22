@@ -8,29 +8,25 @@ public class View {
 
     private JPanel boxesPanel = new JPanel();
     private JPanel boxesPanel2 = new JPanel();
-    private final String title = "Metric";
     private TimeSeries_AWT demo;
     private JPanel prePanel;
     private GridBagConstraints preCenter = new GridBagConstraints();
-    private ArrayList<CheckBoxButton> checkList= new ArrayList<>();
+    private ArrayList<CheckBoxButton> checkList = new ArrayList<>();
     private static URLReader urlReader = null;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    UIManager.setLookAndFeel(UIManager
-                            .getSystemLookAndFeelClassName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                View mainGUI = new View();
-                try {
-                    mainGUI.display();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager
+                        .getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            View mainGUI = new View();
+            try {
+                mainGUI.display();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -56,8 +52,8 @@ public class View {
         boxesPanel2.setVisible(true);
         preFrame.setVisible(true);
 
-        urlReader= new URLReader();
-        demo = new TimeSeries_AWT(title, new ArrayList<>(),urlReader);
+        urlReader = new URLReader();
+        demo = new TimeSeries_AWT(new ArrayList<>(), urlReader);
         demo.setVisible(true);
 
         prePanel.add(demo, preCenter);
@@ -65,7 +61,7 @@ public class View {
     }
 
 
-    private void  createCheckBoxButtons() {
+    private void createCheckBoxButtons() {
 
         CheckBoxButton tempBox = new CheckBoxButton("temp");
         CheckBoxButton horWindBox = new CheckBoxButton("horWind");
@@ -116,7 +112,7 @@ public class View {
         boxesPanel.add(checkBoxButton);
     }
 
-    private void updateInfo() throws Exception {
+    private void updateInfo() {
         ArrayList<String> paramsList = new ArrayList<>();
 
         paramsList = getParams(paramsList);
@@ -124,15 +120,15 @@ public class View {
         prePanel.setVisible(false);
         prePanel.remove(demo);
         demo = null;
-        demo = new TimeSeries_AWT(title, paramsList, urlReader);
+        demo = new TimeSeries_AWT(paramsList, urlReader);
         prePanel.add(demo);
         prePanel.setVisible(true);
     }
 
     private ArrayList<String> getParams(ArrayList<String> paramsList) {
 
-        for(CheckBoxButton checkBoxButton : checkList){
-            paramsList= checkBoxButton.checkParam(paramsList);
+        for (CheckBoxButton checkBoxButton : checkList) {
+            paramsList = checkBoxButton.checkParam(paramsList);
         }
 
         return paramsList;
